@@ -2,63 +2,46 @@
 
 class Router
 {
-    private static $params = null;
+    protected $uri;
+    protected $controller;
+    protected $action;
+    protected $params = array();
     
-    public static function getUrlParams()
+    public function getUri()
     {
-        if(self::$params != null) return self::$params;
-        
-        $url = explode("?", $_SERVER['REQUEST_URI'])[0];
-        
-        $url = array_slice(explode('/', $url), 1)[0] != DIRROOT ? 
-                array_slice(explode('/', $url), 1) : 
-                array_slice(explode('/', $url), 2);
-        
-        if(empty($url[(count($url)-1)])) unset($url[(count($url)-1)]);
-        
-        self::$params = $url;
-        
-        return $url;
+        return $this->uri;
+    }
+
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    public function getAction()
+    {
+        return $this->action;
     }
     
-    public static function routeError()
+    public function getParams()
     {
-        header("HTTP/1.1 404 Not found");
-        header('Location:'.DS.'404') || header('Location:'.DS.DIRROOT.DS.'404');
+        return $this->params;
     }
-    
-    public static function run()
+
+    public function __construct($uri)
     {
-        $params = self::getUrlParams();
+        $this->uri = explode('/', $uri);
         
-        $controller_name = 'Controller_'.(empty($params[0]) ? DEF_CONTROLLER : strtolower($params[0]));
-        $action_name = "action_".(empty($params[1]) ? DEF_ACTION : strtolower($params[1]));
-        
-        $controler_path = ROOT.DS.'app'.DS.'controllers'.DS.$controller_name.'.php';
-        
-        try
+        if (empty($this->uri[0]))
         {
-            if(!file_exists($controler_path)) {
-                throw new Exception ("Not found", 404);
-            }
-            include $controler_path;
-            
-            $controller = new $controller_name();
-            
-            if(!method_exists($controller, $action_name)) {
-                throw new Exception("Not found", 404);
-            }
-            $controller->$action_name();
-            
-        } 
-        catch (Exception $ex) 
-        {
-            switch($ex->getCode())
-            {
-                case 404:
-                    self::routeError();
-                    break;
-            }
+            array_shift($this->uri);
         }
+        if ($this->uri[0] == DIRROOT)
+        {
+            array_shift($this->uri);
+        }
+
+        $this->controller = (!empty($this->uri[0])) ? $this->uri[0] : Config::get("default_controller");
+        $this->action = (!empty($this->uri[1])) ? $this->uri[1] : Config::get("default_action");
+        $this->params = array_slice($this->uri, 2);
     }
 }
