@@ -1,9 +1,5 @@
 <?php
 
-require_once ROOT.DS.'core'.DS.'classes'.DS.'router.php';
-require_once ROOT.DS.'core'.DS.'classes'.DS.'controller.php';
-require_once ROOT.DS.'core'.DS.'classes'.DS.'view.php';
-require_once ROOT.DS.'core'.DS.'classes'.DS.'model.php';
+require_once ROOT.DS.'core'.DS.'classes'.DS.'autoload.php';
 
-
-Router::run();
+app::go($_SERVER['REQUEST_URI']);
