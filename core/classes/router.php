@@ -35,10 +35,6 @@ class Router
         {
             array_shift($this->uri);
         }
-        if ($this->uri[0] == DIRROOT)
-        {
-            array_shift($this->uri);
-        }
 
         $this->controller = (!empty($this->uri[0])) ? $this->uri[0] : Config::get("default_controller");
         $this->action = (!empty($this->uri[1])) ? $this->uri[1] : Config::get("default_action");
