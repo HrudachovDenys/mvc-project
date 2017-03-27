@@ -4,6 +4,11 @@ class app
 {
     protected static $router;
     
+    public static function getRouter()
+    {
+        return self::$router;
+    }
+
     public static function go($uri)
     {
         self::$router = new Router($uri);
@@ -42,6 +47,6 @@ class app
     private function routeError()
     {
         header("HTTP/1.1 404 Not found");
-        header('Location:'.DS.'404') || header('Location:'.DS.DIRROOT.DS.'404');
+        header('Location:'.DS.'404');
     }
 }
