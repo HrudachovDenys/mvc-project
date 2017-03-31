@@ -6,7 +6,6 @@
         <script src="js/script.js"></script>
     </head>
     <body>
-        ddd
         <?=$content?>
     </body>
 </html>

@@ -4,7 +4,7 @@ class Controller_Main extends Controller
 {
     public function action_index()
     {
-        $view = new View();
+        $view = new View(null, 'main');
         $view->render();
     }
 }

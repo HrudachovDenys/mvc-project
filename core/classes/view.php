@@ -18,24 +18,20 @@ class View
         
         if($template != null)
         {
-            $this->setTemplate($template);
+            $this->templatePath = TEMPLATE_PATH.DS.$template.'.php';
         }
-    }
-    
-    private function setTemplate($template)
-    {
-        $this->templatePath = TEMPLATE_PATH.DS.$template.'.php';
     }
     
     private function renderTemplate()
     {
         ob_start();
         $this->renderDefault();
+        
         $content = ob_get_clean();
         
         if(file_exists($this->templatePath))
         {
-            include $this->templatePath;
+            require $this->templatePath;
         }
     }
     
@@ -43,7 +39,7 @@ class View
     {
         if(file_exists($this->viewPath))
         {
-            include $this->viewPath;
+            require $this->viewPath;
         }
     }
     

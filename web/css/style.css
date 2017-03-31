@@ -1,0 +1,74 @@
+body
+{
+    background: black;
+    margin: 0;
+    padding: 0;
+}
+
+header
+{
+    height: 200px;
+    position: relative;
+    bottom: 0;
+}
+
+header .logo
+{
+    background-size: 100%;
+    width: 20%;
+    margin: 50px 0 0 20px;
+}
+
+ul
+{
+    background: #1a2026;
+    list-style-type: none;
+    position: absolute;
+    height: 50px;
+    top: 200px;
+    left: 2%;
+    right: 2%;
+    margin: 0;
+    box-shadow: 0 4px 10px -2px black;
+    z-index: 999;
+}
+
+ul li
+{
+    float: left;
+    margin-right: 10px;
+}
+
+ul .login
+{
+    float: right;
+}
+ul .registation
+{
+    float: right;
+}
+
+ul li a
+{
+    text-decoration: none;
+    color: #cccccc;
+    font-family: sans-serif;
+    text-align: center;
+    line-height: 50px;
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+ul li a:hover
+{
+    background:#060a0e;
+}
+
+section
+{
+    background: #0f0f12;
+    width: 96%;
+    margin: 0 auto;
+    position: relative;
+    top: 50px;
+}

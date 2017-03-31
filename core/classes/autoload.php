@@ -5,8 +5,8 @@ require_once ROOT.DS.'config'.DS.'config.php';
 function __autoload($className)
 {
     $classPath = ROOT.DS.'core'.DS.'classes'.DS.strtolower($className).'.php';
-    $controllerPath = ROOT.DS.'app'.DS.'controllers'.DS.'Controller_'.strtolower($className).'.php';
-    $modelPath = ROOT.DS.'app'.DS.'models'.DS.strtolower($className).'.php';
+    $controllerPath = ROOT.DS.'app'.DS.'controllers'.DS.'controller_'.strtolower($className).'.php';
+    $modelPath = ROOT.DS.'app'.DS.'models'.DS.'model_'.strtolower($className).'.php';
     
     if(file_exists($classPath))
     {
