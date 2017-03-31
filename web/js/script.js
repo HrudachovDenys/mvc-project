@@ -17,19 +17,19 @@ $(window).ready(function(){
     $("ul .login a").click(function () {
         $('.popup').css('visibility', 'visible');
         $('.popup .login').css('visibility', 'visible');
+        $('.popup .login').animate({top: "50%"}, 300);
     });
 
-    $("ul .reg a").click(function () {
-        $('.popup').css('visibility', 'visible');
-        $('.popup .reg').css('visibility', 'visible');
-    });
 
-    $(".popup .overlay").click(function () {
-        if($('.popup').css('visibility') == 'visible')
+    $(".popup .overlay, .popup_closer").click(function () {
+        if($('.popup').css('visibility') === 'visible')
         {
-            $('.popup').css('visibility', 'hidden');
-            $('.popup .login').css('visibility', 'hidden');
-            $('.popup .reg').css('visibility', 'hidden');
+            $('.popup .login').animate({top: "-50%"}, 300);
+            setTimeout(function(){
+                $('.popup .login').css('visibility', 'hidden');
+                $('.popup .reg').css('visibility', 'hidden');
+                $('.popup').css('visibility', 'hidden');
+            }, 300);
         }
     });
 });

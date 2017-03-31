@@ -1,26 +1,23 @@
-body
-{
+body{
     background: black;
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
-header
-{
+header{
     height: 200px;
     position: relative;
     bottom: 0;
 }
 
-header .logo
-{
+header .logo{
     background-size: 100%;
     width: 20%;
     margin: 50px 0 0 20px;
 }
 
-ul
-{
+ul{
     background: #1a2026;
     list-style-type: none;
     position: absolute;
@@ -33,53 +30,47 @@ ul
     z-index: 999;
 }
 
-ul li
-{
+ul li{
     float: left;
     margin-right: 10px;
 }
 
-ul .login
-{
-    float: right;
-}
-ul .reg
-{
-    float: right;
-}
-
-ul li a
-{
+ul li a{
     text-decoration: none;
     color: #cccccc;
-    font-family: sans-serif;
     text-align: center;
     line-height: 50px;
     display: block;
     padding-left: 15px;
     padding-right: 15px;
 }
-ul li a:hover
-{
+ul li a:hover{
     background:#060a0e;
+    cursor: pointer;
 }
 
-section
-{
+ul .login{
+    float: right;
+}
+ul .reg{
+    float: right;
+}
+
+section{
     background: #0f0f12;
     width: 96%;
     margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
     position: relative;
     top: 50px;
 }
 
-.popup
-{
+.popup{
     visibility: hidden;
 }
 
-.popup .overlay
-{
+.popup .overlay{
     position: fixed;
     top: 0;
     bottom: 0;
@@ -89,54 +80,132 @@ section
     z-index: 1000;
 }
 
-.popup .login
-{
-    position: fixed;
-    top: 30%;
-    bottom: 30%;
-    left: 35%;
-    right: 35%;
-    background: white;
-    z-index: 1001;
-    visibility: hidden;
+.popup_closer{
+    position: absolute;
+    right: 4px;
+    top: 4px;
 }
 
-.popup .reg
+.popup_closer:hover
 {
-    position: fixed;
-    top: 20%;
-    bottom: 20%;
-    left: 35%;
-    right: 35%;
-    z-index: 1001;
-    background: white;
-    visibility: hidden;
+    cursor: pointer;
 }
 
-.popup .login h1, .popup .reg h1
-{
-    text-align: center;
+.popup .login{
+    position: fixed;
+    width: 400px;
+    height: 300px;
+    left: 50%;
+    top: -50%;
+    margin-top: -150px;
+    margin-left: -200px;
+    background: linear-gradient(to bottom, black, #c3c3c3);
+    z-index: 1001;
+    visibility: hidden;
+    box-shadow: 0 0 5px whitesmoke;
 }
 
 .popup .login table{
     width: 80%;
     margin-left: 10%;
+    margin-right: 10%;
 }
 
 .popup .login table tr{
-    line-height: 50px;
-}
-.popup .login table td{
-    padding: 0;
-    margin: 0;
+    line-height: 30px;
 }
 
-.popup .login input[type=submit]{
-    width: 100%;
+.popup .login table thead tr td p{
+    text-align: center;
+    color: #cccccc;
+    margin-top: 20px;
+    font-size: 25px;
 }
 
-.popup .login input[type=text], .popup input[type=password]{
+.popup .login table tr td img{
+    margin-top: 10px;
+}
+
+.popup .login table tr td input[type=text], 
+.popup .login table tr td input[type=password]{
     padding: 10px;
+    width: 90%;
+    border: 2px solid #ababab;
+    outline: none;
+}
+
+.popup .login table tr td input[type=text]:focus, 
+.popup .login table tr td input[type=password]:focus{
+    border: 2px solid #8d8d8d;
+}
+
+.popup .login table tr td label{
+    color: whitesmoke;
+    font-size: 12px;
+}
+
+.popup .login table tr td span{
+    margin-left: 75px;
+}
+
+.popup .login table tr td span a{
+    color: whitesmoke;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.popup .login table tr td span a:hover{
+    color: #1a2026;
+    cursor: pointer;
+}
+
+.popup .login table tr td .bt_auth{
     width: 100%;
-    margin-right: 100px;
+    padding: 10px;
+    margin-top: 10px;
+    background: #1a2026;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+.popup .login table tr td .bt_auth:active{
+    background: #9b9b9b;
+}
+
+.resetpass_form{
+    text-align: center;
+    color: yellow;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-bottom: 100px;
+}
+
+.resetpass_form img{
+    margin-right: 10px;
+    margin-top: 35px;
+    vertical-align: top;
+}
+
+.resetpass_form input[type=text]{
+    margin: 0;
+    padding: 10px;
+    width: 60%;
+    border: 2px solid #ababab;
+    outline: none;
+    margin-top: 30px;
+    vertical-align: top;
+}
+
+.resetpass_form .g-recaptcha{
+    margin-top: 50px;
+    margin-left: 33%;
+}
+
+p{
+    font-size: 18px;
+}
+
+h1{
+    font-size: 25px;
 }

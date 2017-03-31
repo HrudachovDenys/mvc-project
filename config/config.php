@@ -2,6 +2,7 @@
 
 Config::set('site_name', 'mvc-project');
 Config::set('dir_root', '/mvc-project/');
+Config::set('domain', 'http://mvc.localhost/');
 
 //default controller
 Config::set('default_controller', 'main');
