@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'server' => 'loaclhost',
-    'db' => '',
-    'charset' => 'utf-8',
+    'server' => 'localhost',
+    'db' => 'image_db',
+    'charset' => 'utf8',
     'user' => 'root',
     'pass' => ''
 ];

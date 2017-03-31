@@ -43,7 +43,7 @@ ul .login
 {
     float: right;
 }
-ul .registation
+ul .reg
 {
     float: right;
 }
@@ -71,4 +71,72 @@ section
     margin: 0 auto;
     position: relative;
     top: 50px;
+}
+
+.popup
+{
+    visibility: hidden;
+}
+
+.popup .overlay
+{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.popup .login
+{
+    position: fixed;
+    top: 30%;
+    bottom: 30%;
+    left: 35%;
+    right: 35%;
+    background: white;
+    z-index: 1001;
+    visibility: hidden;
+}
+
+.popup .reg
+{
+    position: fixed;
+    top: 20%;
+    bottom: 20%;
+    left: 35%;
+    right: 35%;
+    z-index: 1001;
+    background: white;
+    visibility: hidden;
+}
+
+.popup .login h1, .popup .reg h1
+{
+    text-align: center;
+}
+
+.popup .login table{
+    width: 80%;
+    margin-left: 10%;
+}
+
+.popup .login table tr{
+    line-height: 50px;
+}
+.popup .login table td{
+    padding: 0;
+    margin: 0;
+}
+
+.popup .login input[type=submit]{
+    width: 100%;
+}
+
+.popup .login input[type=text], .popup input[type=password]{
+    padding: 10px;
+    width: 100%;
+    margin-right: 100px;
 }
