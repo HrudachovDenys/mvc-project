@@ -31,25 +31,91 @@
                     <table>
                         <thead>
                             <tr>
-                                <td colspan="2"><p>Sign In</p></td>
+                                <td colspan="2"><p>Авторизация</p></td>
                             </tr>
                         </thead>
                         <tr>
                             <td><img src="/images/user-login.png"></td>
-                            <td><input type="text" class="auth_login" name="user" placeholder="Username"></td>
+                            <td><input type="text" name="user" placeholder="Имя пользователя" required></td>
                         </tr>
                         <tr>
                             <td><img src="/images/user-pass.png"></td>
-                            <td><input type="password" class="auth_pass"  name="pass" placeholder="Password"></td>
+                            <td><input type="password" name="pass" placeholder="Пароль" required></td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <label><input type="checkbox" name="cb_save_pass" checked>Remember me</label>
-                                <span class="reset_pass"><a href="<?=Config::get('domain')?>resetpass">Forgot your password?</a></span>
+                                <label><input type="checkbox" name="cb_save_pass" checked>Запомнить меня</label>
+                                <span class="reset_pass">Забыли пароль?</span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input class="bt_auth" type="submit" value="Login"></td>
+                            <td colspan="2"><input class="bt_auth" type="submit" value="Войти"></td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <form method="post" action="<?=Config::get('domain')?>api/resetpass">
+                <div class="resetpass">
+                    <img src="/images/close.png" class="popup_closer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td colspan="2"><p>Востановление пароля</p></td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td><img src="/images/user-login.png"></td>
+                            <td><input type="text" class="resetpass_login" name="user" placeholder="Имя пользователя" required></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input class="bt_reset" type="submit" value="Сбросить пароль">
+                                <input class="bt_cancel" type="button" value="Отмена">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <form method="post" action="<?=Config::get('domain')?>api/auth">
+                <div class="registration">
+                    <img src="/images/close.png" class="popup_closer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td colspan="2"><p>Регистрация</p></td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td><img src="/images/user-login.png"></td>
+                            <td><input type="text" name="user" placeholder="Имя пользователя" required></td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/email.png"></td>
+                            <td><input type="email" name="email" placeholder="Адрес електронной почты" required></td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/user-pass.png"></td>
+                            <td><input type="password" name="pass" placeholder="Пароль" required></td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/user-pass.png"></td>
+                            <td><input type="password" name="pass" placeholder="Повторите пароль" required></td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/gender.png"></td>
+                            <td>
+                                <input type="radio" name="gender" value="men" required><label>Мужской</label>
+                                <input type="radio" name="gender" value="women" required><label>Женский</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="/images/date-birthday.png"></td>
+                            <td>
+                                <input type="date" class="date_birhday" name="date_bithday" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input class="bt_reg" type="submit" value="Регистрация" required></td>
                         </tr>
                     </table>
                 </div>

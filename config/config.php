@@ -10,3 +10,7 @@ Config::set('default_controller', 'main');
 Config::set('default_action', 'index');
 //db connection
 Config::set('db', require 'db.php');
+
+//reCaptcha
+Config::set('reCaptcha_key', '6LfeGBsUAAAAAPgBaSh9NhYQDg0bTiJe5kjDOVdv');
+Config::set('reCaptcha_secredKey', '6LfeGBsUAAAAAEXBNwXPzVYsLHN6uUMLklbkK3Dr');

@@ -5,6 +5,14 @@ body{
     font-family: sans-serif;
 }
 
+p{
+    font-size: 18px;
+}
+
+h1{
+    font-size: 25px;
+}
+
 header{
     height: 200px;
     position: relative;
@@ -91,121 +99,130 @@ section{
     cursor: pointer;
 }
 
-.popup .login{
+.popup form .login{
     position: fixed;
     width: 400px;
-    height: 300px;
+    height: 290px;
     left: 50%;
     top: -50%;
-    margin-top: -150px;
+    margin-top: -145px;
     margin-left: -200px;
-    background: linear-gradient(to bottom, black, #c3c3c3);
+    background: #4b4b4b;
     z-index: 1001;
     visibility: hidden;
-    box-shadow: 0 0 5px whitesmoke;
+    box-shadow: 0 0 5px black;
 }
 
-.popup .login table{
+.popup form div table{
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
 }
 
-.popup .login table tr{
+.popup form div table tr{
     line-height: 30px;
 }
 
-.popup .login table thead tr td p{
+.popup form div table thead tr td p{
     text-align: center;
     color: #cccccc;
     margin-top: 20px;
     font-size: 25px;
 }
 
-.popup .login table tr td img{
+.popup form div table tr td img{
     margin-top: 10px;
 }
 
-.popup .login table tr td input[type=text], 
-.popup .login table tr td input[type=password]{
+.popup form div table tr td input[type=text], 
+.popup form div table tr td input[type=password],
+.popup form div table tr td input[type=email],
+.popup form div table tr td input[type=date]{
     padding: 10px;
     width: 90%;
     border: 2px solid #ababab;
     outline: none;
 }
 
-.popup .login table tr td input[type=text]:focus, 
-.popup .login table tr td input[type=password]:focus{
+.popup form div table tr td input[type=text]:focus, 
+.popup form div table tr td input[type=password]:focus,
+.popup form div table tr td input[type=email]:focus{
     border: 2px solid #8d8d8d;
 }
 
-.popup .login table tr td label{
+.popup form div table tr td label{
     color: whitesmoke;
     font-size: 12px;
 }
 
-.popup .login table tr td span{
-    margin-left: 75px;
-}
-
-.popup .login table tr td span a{
+.popup form .login table tr td span{
     color: whitesmoke;
     font-size: 12px;
     text-decoration: none;
+    margin-left: 100px;
 }
 
-.popup .login table tr td span a:hover{
+.popup form .login table tr td span:hover{
     color: #1a2026;
     cursor: pointer;
 }
 
-.popup .login table tr td .bt_auth{
+.popup form .login table tr td .bt_auth,
+.popup form .registration table tr td .bt_reg{
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
     background: #1a2026;
     border: none;
     color: white;
     outline: none;
 }
 
-.popup .login table tr td .bt_auth:active{
+.popup form .resetpass table tr td .bt_reset,
+.popup form .resetpass table tr td .bt_cancel{
+    width: 49%;
+    padding: 10px;
+    margin-top: 25px;
+    background: #1a2026;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+.popup form .login table tr td .bt_auth:active,
+.popup form .resetpass table tr td .bt_reset:active,
+.popup form .resetpass table tr td .bt_cancel:active,
+.popup form .registration table tr td .bt_reg:active{
     background: #9b9b9b;
 }
 
-.resetpass_form{
-    text-align: center;
-    color: yellow;
-    margin-left: 20%;
-    margin-right: 20%;
-    padding-bottom: 100px;
+.popup form .resetpass{
+    position: fixed;
+    width: 400px;
+    height: 220px;
+    left: 50%;
+    top: -50%;
+    margin-top: -110px;
+    margin-left: -200px;
+    background: #4b4b4b;
+    z-index: 1002;
+    visibility: hidden;
+    box-shadow: 0 0 5px black;
 }
 
-.resetpass_form img{
-    margin-right: 10px;
-    margin-top: 35px;
-    vertical-align: top;
+.popup form .registration{
+    position: fixed;
+    width: 400px;
+    height: 500px;
+    left: 50%;
+    top: -50%;
+    margin-top: -250px;
+    margin-left: -200px;
+    background: #4b4b4b;
+    z-index: 1001;
+    visibility: hidden;
+    box-shadow: 0 0 5px black;
 }
 
-.resetpass_form input[type=text]{
-    margin: 0;
-    padding: 10px;
-    width: 60%;
-    border: 2px solid #ababab;
-    outline: none;
-    margin-top: 30px;
-    vertical-align: top;
-}
-
-.resetpass_form .g-recaptcha{
-    margin-top: 50px;
-    margin-left: 33%;
-}
-
-p{
-    font-size: 18px;
-}
-
-h1{
-    font-size: 25px;
+.popup form .registration table tr td .bt_reg{
+    margin-top: 20px;
 }
