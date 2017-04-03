@@ -74,7 +74,7 @@ class Module_Auth
         }
         
         $pid = $this->db->user_profile->insert([
-            "user_id"      => $id,
+            "user_id"      => $uid,
             "gender"       => $gender,
             "date_birhday" => $date_birthday
         ]);
@@ -86,7 +86,7 @@ class Module_Auth
         }
         
         $rid = $this->db->user_roles->insert([
-            "user_id" => $id,
+            "user_id" => $uid,
             "role_id" => $res[0]["id"]
         ]);
         
@@ -96,6 +96,45 @@ class Module_Auth
             $this->db->user_profile->delete($pid);
             return false;
         }
+        
+        $res = $this->sendConfirmEmail($uid, $email);
+        
+        if(!$res)
+        {
+            $this->db->users->delete($uid);
+            $this->db->user_profile->delete($pid);
+            $this->db->user_roles->delete($rid);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private function sendConfirmEmail($uid, $to)
+    {
+        $hash = md5(time() . $uid);
+        
+        $cid = $this->db->confirm_keys->insert([
+            "user_id"  => $uid,
+            "hash"     => $hash,
+            "expiries" => date('y:m:d', strtotime("+10 days"))
+        ]);
+        
+        if($cid == 0)
+        {
+            return false;
+        }
+        
+        $email = new Module_Email();
+        $email->setRecipient($to);
+        $email->setSubject('Подтверждение регистрации');
+
+        $href = Config::get('domain') . 'api/confirm/' . $hash . '/' . $uid;
+        $msg = "Перейдите по ссылке что бы подтвердить регистрацию. ";
+        $msg .= "<a href='{$href}'>Перейти</a>";
+
+        $email->setText($msg);
+        $email->send_mail_ru();
         
         return true;
     }

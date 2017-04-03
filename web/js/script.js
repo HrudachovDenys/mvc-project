@@ -18,7 +18,13 @@ $(window).ready(function(){
     show_form("ul .reg a", '.popup .registration');
     change_form(".popup form .login table tr td span", '.popup .login', '.popup .resetpass');
     change_form(".popup form .resetpass table tr td .bt_cancel", '.popup .resetpass', '.popup .login');
-    hideAll_form();
+    hideAll_form_click();
+    
+    var domain = $('body').data('domain');
+    
+    ajaxFormRequest(domain + 'api/auth', '.form_login');
+    ajaxFormRequest(domain + 'api/reg', '.form_registration');
+    ajaxFormRequest(domain + 'api/auth', '.form_resetpass');
 });
 
 function change_form(click_selector, what_selector, for_selector){
@@ -41,19 +47,84 @@ function show_form(selector, form_selector){
     });
 }
 
-function hideAll_form(){
+function hideAll_form_click(){
     $(".popup .overlay, .popup_closer").click(function () {
-        if($('.popup').css('visibility') === 'visible')
+        hideAll_form();
+    });
+}
+
+function hideAll_form()
+{
+    if($('.popup').css('visibility') === 'visible')
+    {
+        $('.popup .login').animate({top: "-50%"}, 300);
+        $('.popup .resetpass').animate({top: "-50%"}, 300);
+        $('.popup .registration').animate({top: "-50%"}, 300);
+        setTimeout(function(){
+            $('.popup .login').css('visibility', 'hidden');
+            $('.popup .resetpass').css('visibility', 'hidden');
+            $('.popup .registration').css('visibility', 'hidden');
+            $('.popup').css('visibility', 'hidden');
+        }, 300);
+    }
+}
+
+function ajaxFormRequest(action, form_selector)
+{
+    $(form_selector).submit(function(){
+        
+        var form = $(this);
+        var error = false;
+        
+        form.find('input').each( function(){
+            if ($(this).val() === '') 
+            {
+                error = true;
+            }
+        });
+        
+        if(!error)
         {
-            $('.popup .login').animate({top: "-50%"}, 300);
-            $('.popup .resetpass').animate({top: "-50%"}, 300);
-            $('.popup .registration').animate({top: "-50%"}, 300);
-            setTimeout(function(){
-                $('.popup .login').css('visibility', 'hidden');
-                $('.popup .resetpass').css('visibility', 'hidden');
-                $('.popup .registration').css('visibility', 'hidden');
-                $('.popup').css('visibility', 'hidden');
-            }, 300);
+            var data = form.serialize();
+            var html = null;
+            var parent = null;
+            
+            $.ajax({
+                url: action, 
+                type: 'post',
+                data: data,
+                beforeSend: function(){
+                    parent = $(form_selector + ' input[type="submit"]').parent();
+                    html = $(parent).html();
+                    $(parent).html('<img src="/images/loading.png" class="img_loading">');
+                },
+                success: function(data){
+                    if(data !== '')
+                    {
+                        $(form_selector + ' .status label').text(data);
+                        $(parent).html(html);
+                    }
+                    else
+                    {
+                        $(parent).html(html);
+                        if(form_selector === '.form_login')
+                        {
+                            hideAll_form();
+                        }
+                        if(form_selector === '.form_registration')
+                        {
+                            hideAll_form();
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $(parent).html(html);
+                    $(form_selector + ' .status label').text(thrownError);
+                }
+            });
+            
         }
+        
+        return false;
     });
 }

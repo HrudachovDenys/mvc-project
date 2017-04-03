@@ -66,3 +66,12 @@ CREATE TABLE `tokens`
     `user_id` INT UNSIGNED,
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 );
+
+CREATE TABLE `confirm_keys`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `hash` VARCHAR(255) NOT NULL,
+    `expiries` TIMESTAMP,
+    `user_id` INT UNSIGNED,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+);
