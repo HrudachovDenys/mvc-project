@@ -16,8 +16,8 @@ $(window).ready(function(){
     
     show_form("ul .login a", '.popup .login');
     show_form("ul .reg a", '.popup .registration');
-    change_form(".popup form .login table tr td span", '.popup .login', '.popup .resetpass');
-    change_form(".popup form .resetpass table tr td .bt_cancel", '.popup .resetpass', '.popup .login');
+    change_form_click(".popup form .login table tr td span", '.popup .login', '.popup .resetpass');
+    change_form_click(".popup form .resetpass table tr td .bt_cancel", '.popup .resetpass', '.popup .login');
     hideAll_form_click();
     
     var domain = $('body').data('domain');
@@ -27,16 +27,20 @@ $(window).ready(function(){
     ajaxFormRequest(domain + 'api/auth', '.form_resetpass');
 });
 
-function change_form(click_selector, what_selector, for_selector){
+function change_form_click(click_selector, what_selector, for_selector){
     $(click_selector).click(function () {
-        $(what_selector).animate({top: "-50%"}, 300);
-        $(for_selector).css('visibility', 'visible');
-        $(for_selector).animate({top: "50%"}, 300);
-        
-        setTimeout(function(){
-            $(what_selector).css('visibility', 'hidden');
-        }, 300);
+        change_form(what_selector, for_selector);
     });
+}
+
+function change_form(what_selector, for_selector){
+    $(what_selector).animate({top: "-50%"}, 300);
+    $(for_selector).css('visibility', 'visible');
+    $(for_selector).animate({top: "50%"}, 300);
+
+    setTimeout(function(){
+        $(what_selector).css('visibility', 'hidden');
+    }, 300);
 }
 
 function show_form(selector, form_selector){
@@ -60,10 +64,12 @@ function hideAll_form()
         $('.popup .login').animate({top: "-50%"}, 300);
         $('.popup .resetpass').animate({top: "-50%"}, 300);
         $('.popup .registration').animate({top: "-50%"}, 300);
+        $('.popup .reg_success').animate({top: "-50%"}, 300);
         setTimeout(function(){
             $('.popup .login').css('visibility', 'hidden');
             $('.popup .resetpass').css('visibility', 'hidden');
             $('.popup .registration').css('visibility', 'hidden');
+            $('.popup .reg_success').css('visibility', 'hidden');
             $('.popup').css('visibility', 'hidden');
         }, 300);
     }
@@ -113,13 +119,13 @@ function ajaxFormRequest(action, form_selector)
                         }
                         if(form_selector === '.form_registration')
                         {
-                            hideAll_form();
+                            change_form('.popup .registration', '.popup .reg_success');
                         }
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     $(parent).html(html);
-                    $(form_selector + ' .status label').text(thrownError);
+                    $(form_selector + ' .status label').text('Error!');
                 }
             });
             

@@ -25,7 +25,7 @@
         
         <div class="popup">
             <div class="overlay"></div>
-            <form class="form_login" method="post" action="">
+            <form class="form_login">
                 <div class="login">
                     <img src="/images/close.png" class="popup_closer">
                     <table>
@@ -144,20 +144,20 @@
                     </table>
                 </div>
             </form>
-            <form class="form_reg_success" method="post" action="">
+            <form class="form_reg_success">
                 <div class="reg_success">
                     <img src="/images/close.png" class="popup_closer">
                     <table>
                         <thead>
                             <tr>
-                                <td colspan="2"><p></p></td>
+                                <td colspan="2"><p>Вы зарегистрирываны</p></td>
                             </tr>
                         </thead>
                         <tr>
                             <td colspan="2"><label>Перейдите по ссылке из письма отправленого на вашу електронную почту что бы подтвердить регистрацию</label></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input class="bt_ok" type="button" value="Ок"></td>
+                            <td colspan="2"><input class="bt_ok" type="button" value="Ок" onclick="hideAll_form()"></td>
                         </tr>
                     </table>
                 </div>

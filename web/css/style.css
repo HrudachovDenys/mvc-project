@@ -181,7 +181,8 @@ section{
 }
 
 .popup form .login table tr td .bt_auth,
-.popup form .registration table tr td .bt_reg{
+.popup form .registration table tr td .bt_reg,
+.popup form .reg_success table tr td .bt_ok{
     width: 100%;
     padding: 10px;
     background: #1a2026;
@@ -204,7 +205,8 @@ section{
 .popup form .login table tr td .bt_auth:active,
 .popup form .resetpass table tr td .bt_reset:active,
 .popup form .resetpass table tr td .bt_cancel:active,
-.popup form .registration table tr td .bt_reg:active{
+.popup form .registration table tr td .bt_reg:active,
+.popup form .reg_success table tr td .bt_ok:active{
     background: #9b9b9b;
 }
 
@@ -236,7 +238,8 @@ section{
     box-shadow: 0 0 5px black;
 }
 
-.popup form .registration table tr td .bt_reg{
+.popup form .registration table tr td .bt_reg,
+.popup form .reg_success table tr td .bt_ok{
     margin-top: 20px;
 }
 
@@ -302,4 +305,28 @@ section{
     animation-timing-function: linear;
     display: block;
     margin: 0 auto;
+}
+
+.popup form .reg_success{
+    position: fixed;
+    width: 400px;
+    height: 190px;
+    left: 50%;
+    top: -50%;
+    margin-top: -95px;
+    margin-left: -200px;
+    background: #4b4b4b;
+    z-index: 1002;
+    visibility: hidden;
+    box-shadow: 0 0 5px black;
+    text-align: center;
+}
+
+.popup form .reg_success table tr
+{
+    line-height: 20px;
+}
+
+.popup form .reg_success table tr td label{
+    color: yellow;
 }
