@@ -74,7 +74,7 @@ class Module_DB
         return $this->conn->lastInsertId();
     }
     
-     public function delete($id)
+    public function delete($id)
     {
         if($this->table == null) 
         {
@@ -86,4 +86,27 @@ class Module_DB
         $res->execute();
         $this->reset();
     }
+    
+    public function update($id, $data)
+    {
+        if($this->table == null) 
+        {
+            return false;
+        }
+        
+        $query = "UPDATE {$this->table} SET ";
+        foreach($data as $key => $value)
+        {
+            $query .= "`{$key}`=:{$key}";
+        }
+        
+        $query .= " WHERE id=:id";
+        
+        $data["id"] = $id;
+        $res = $this->conn->prepare($query);
+        $res->execute($data);
+        $this->reset();
+    }
+    
+    
 }

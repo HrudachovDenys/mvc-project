@@ -2,7 +2,6 @@
 
 class Module_Auth
 {
-    private $livetime = 3600*24*30;
     private static $instance = null;
     private $db;
     private $user = null;
@@ -47,6 +46,11 @@ class Module_Auth
     
     public function reg($username, $email, $pass, $gender, $date_birthday, $role)
     {
+         if($this->is_login())
+        {
+            return false;
+        }
+        
         if($this->is_exists($username)) 
         {
             return false;
@@ -110,14 +114,14 @@ class Module_Auth
         return true;
     }
     
-    private function sendConfirmEmail($uid, $to)
+    public function sendConfirmEmail($uid, $to)
     {
         $hash = md5(time() . $uid);
         
         $cid = $this->db->confirm_keys->insert([
             "user_id"  => $uid,
             "hash"     => $hash,
-            "expiries" => date('y:m:d', strtotime("+10 days"))
+            "expiries" => date('y:m:d H:i:s', strtotime("+10 days"))
         ]);
         
         if($cid == 0)
@@ -137,5 +141,183 @@ class Module_Auth
         $email->send_mail_ru();
         
         return true;
+    }
+    
+    public function confirmEmail($hash, $uid)
+    {
+        $c_keys = $this->db->confirm_keys->getAll("`user_id`=:id", ["id" => $uid]);
+
+        if($c_keys[0]["hash"] != $hash)
+        {
+            return false;
+        }
+        
+        if($c_keys["expiries"] > date('y:m:d'))
+        {
+            $user = $this->db->users->getAll("`id`=:id", ["id" => $uid]);
+            $this->sendConfirmEmail($uid, $user["email"]);
+            return false;
+        }
+        
+        $urid = $this->db->user_roles->getAll("user_id=:id", ["id" => $uid]);
+        
+        if(count($urid) == 0) 
+        {
+            return false;
+        }
+
+        $rid = $this->db->roles->getAll("`id`=:id", ["id" => $urid[0]["role_id"]]);
+        
+        if(count($rid) == 0) 
+        {
+            return false;
+        }
+        
+        if($rid[0]["role"] != "unconfirmed")
+        {
+            return false;
+        }
+        
+        $rid = $this->db->roles->getAll("`role`=:role", ["role" => "user"]);
+        
+        if($rid[0]["role"] != "user")
+        {
+            return false;
+        }
+        
+        $this->db->user_roles->update($urid[0]["id"], ["role_id" => $rid[0]["id"]]);
+        
+        return true;
+    }
+    
+    private function getIp()
+    {
+        return (!empty($_SERVER["HTTP_CLIENT_IP"])) ? $_SERVER["HTTP_CLIENT_IP"] :
+            ((!empty($_SERVER["HTTP_X_FORWARDER_FOR"])) ? $_SERVER["HTTP_X_FORWARDER_FOR"] :
+            ((!empty($_SERVER["REMOTE_ADDR"])) ? $_SERVER["REMOTE_ADDR"] : "0.0.0.0"));
+    }
+    
+    public function login($username, $pass)
+    {
+        if($this->is_login())
+        {
+            return false;
+        }
+        
+        $user = $this->db->users->getAll("`username`=:username", ["username" => $username]);
+        
+        if(count($user) == 0) 
+        {
+            return "Пользователь не зарегестрирыван";
+        }
+        
+        $user = $user[0];
+        
+        if($user["pass"] != $this->generateHashPass($pass, $username, $user["salt"]))
+        {
+            return "Неверный пароль";
+        }
+        
+        $this->user = $user;
+        
+        return $this->createSession($user["id"]);
+    }
+    
+    private function createSession($uid)
+    {
+        $ip = $this->getIp();
+        $client = $_SERVER["HTTP_USER_AGENT"];
+        
+        $timestamp = time() + (86400 * 30);
+        
+        $data = array(
+            "user_id"  => $uid,
+            "key"      => $this->generateSessionKey($ip, $client, $uid),
+            "ip"  => $ip,
+            "browser"  => $client,
+            "expiries" => date('y:m:d H:i:s', $timestamp)
+        );
+        
+        $tid = $this->db->tokens->insert($data);
+        
+        if($tid == 0)
+        {
+            return false;
+        }
+        
+        setcookie("token", $data["key"], $timestamp, "/");
+        
+        return true;
+    }
+    
+    private function generateSessionKey($ip, $client, $uid)
+    {
+        $hash1 = hash("sha256", $ip);
+        $hash2 = hash("sha256", $ip . $client);
+        $hash3 = hash("sha256", $ip . $client . $uid);
+        $hash4 = sha1($ip . $client . $uid);
+        $hash5 = sha1($hash1 . $hash2 . $hash3 . $hash4);
+        $hash6 = md5($hash1 . $hash2 . $hash3 . $hash4 . $hash5);
+        
+        $subkey = sha1(date('y:m:d H:i:s'));
+        $subkey = substr($subkey, 0, 5);
+        
+        return md5($hash1 . $hash2 . $hash3 . $hash4 . $subkey . $hash5 . $hash6) . $subkey;
+    }
+    
+    public function is_login()
+    {
+        if($this->user != null) 
+        {
+            return true;
+        }
+        
+        if(empty($_COOKIE["token"]))
+        {
+            return false;
+        }
+        
+        $key = $_COOKIE["token"];
+        
+        $token = $this->db->tokens->getAll("`key`=:key",["key" => $key]);
+        
+        if(count($token) == 0)
+        { 
+            return false;
+        }
+        
+        $token = $token[0];
+        
+        if($token["expiries"] > time())
+        { 
+            return false;
+        }
+        
+        return $this->validateSession($key, $token["ip"], $token["browser"], $token["user_id"]);
+    }
+    
+    private function validateSession($key, $ip, $client, $uid)
+    {
+        $hash1 = hash("sha256", $ip);
+        $hash2 = hash("sha256", $ip . $client);
+        $hash3 = hash("sha256", $ip . $client . $uid);
+        $hash4 = sha1($ip . $client . $uid);
+        $hash5 = sha1($hash1 . $hash2 . $hash3 . $hash4);
+        $hash6 = md5($hash1 . $hash2 . $hash3 . $hash4 . $hash5);
+        
+        $subkey = substr($key, strlen($key) - 5);
+        
+        return md5($hash1 . $hash2 . $hash3 . $hash4 . $subkey . $hash5 . $hash6) . $subkey == $key;
+    }
+    
+    public function getGender()
+    {
+        $key = $_COOKIE["token"];
+        
+        $token = $this->db->tokens->getAll("`key`=:key",["key" => $key]);
+        
+        $user = $this->db->user_profile->getAll("user_id=:id", ["id" => $token[0]["user_id"]]);
+        
+        return $user[0]["gender"];
     }
 }

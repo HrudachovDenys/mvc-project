@@ -19,8 +19,16 @@
             <li><a href="#">Видео</a></li>
             <li><a href="#">Галерея</a></li>
       
-            <li class="reg"><a>Регистрация</a></li>
-            <li class="login"><a>Вход</a></li>
+            <?php if (Module_Auth::instance()->is_login() && Module_Auth::instance()->getGender() == "men"): ?>
+            <li class="logout"><img src="/images/logout-button.png"></li>
+            <li class="profile"><img src="/images/def-avatar-men.png"></li>
+            <?php elseif (Module_Auth::instance()->is_login() && Module_Auth::instance()->getGender() == "women"): ?>
+            <li class="logout"><img src="/images/logout-button.png"></li>
+            <li class="profile"><img src="/images/def-avatar-women.png"></li>
+            <?php else: ?>
+            <li class="reg"><img src="/images/add-new-user.png"></li>
+            <li class="login"><img src="/images/login-button.png"></li>
+            <?php endif; ?>
         </ul>
         
         <div class="popup">

@@ -2,19 +2,31 @@
 
 class Controller_Api extends Controller
 {
-    public function action_index(){}
+    public function action_index(){ header("Location:" . Config::get('domain')); }
     
     public function action_auth()
     {
+        header("Content-Type: application/json", true);
         //header("Location:" . Config::get('domain'));
-        sleep(1);
-        echo true;
+        $data = array(
+            "error" => '',
+            "gender" => '');
+        
+        $username = strtolower(htmlspecialchars($_POST['user']));
+        $pass = htmlspecialchars($_POST['pass']);
+        
+        $res = Module_Auth::instance()->login($username, $pass);
+        
+        
+        $data["gender"] = Module_Auth::instance()->getGender();
+        
+        echo json_encode($data);
     }
     
     public function action_reg()
     {
-        sleep(1);
-        $data = '';
+        header("Content-Type: application/json", true);
+        $data = array("error" => '');
         
         $username = strtolower(htmlspecialchars($_POST['user']));
         $email = strtolower(htmlspecialchars($_POST['email']));
@@ -26,23 +38,31 @@ class Controller_Api extends Controller
         
         if($pass != $pass_confirmed)
         {
-            $data = "Поля пароль не равны";
+            $data["error"] = "Поля пароль не равны";
         }
         
         $res = Module_Auth::instance()->reg($username, $email, $pass, $gender, $date_birthday, $role);
         
         if(!$res)
         {
-            $data = "Пользователь уже зарегистрирыван";
+            $data["error"] = "Пользователь уже зарегистрирыван";
         }
-        
-        echo $data;
+        echo json_encode($data);
     }
     
     public function action_confirm()
     {
         $params = app::getRouter()->getParams();
-        echo $params[0];
+        if($params[0] == '' || $params[1] == '')
+        {
+            return header("Location: " . Config::get('domain'));
+        }
+        $res = Module_Auth::instance()->confirmEmail($params[0], $params[1]);
+        
+        if($res)
+        {
+            header("Location:" . Config::get('domain'));
+        }
     }
     
     public function action_resetpass()
@@ -52,6 +72,6 @@ class Controller_Api extends Controller
     
     public function action_test()
     {
-        
+       echo Module_Auth::instance()->getGender();
     }
 }

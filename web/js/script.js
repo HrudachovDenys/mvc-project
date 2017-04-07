@@ -14,8 +14,8 @@ $(window).scroll(function(){
 
 $(window).ready(function(){
     
-    show_form("ul .login a", '.popup .login');
-    show_form("ul .reg a", '.popup .registration');
+    show_form("ul .login img", '.popup .login');
+    show_form("ul .reg img", '.popup .registration');
     change_form_click(".popup form .login table tr td span", '.popup .login', '.popup .resetpass');
     change_form_click(".popup form .resetpass table tr td .bt_cancel", '.popup .resetpass', '.popup .login');
     hideAll_form_click();
@@ -24,7 +24,7 @@ $(window).ready(function(){
     
     ajaxFormRequest(domain + 'api/auth', '.form_login');
     ajaxFormRequest(domain + 'api/reg', '.form_registration');
-    ajaxFormRequest(domain + 'api/auth', '.form_resetpass');
+    //ajaxFormRequest(domain + 'api/auth', '.form_resetpass');
 });
 
 function change_form_click(click_selector, what_selector, for_selector){
@@ -99,15 +99,16 @@ function ajaxFormRequest(action, form_selector)
                 url: action, 
                 type: 'post',
                 data: data,
+                dataType: 'json',
                 beforeSend: function(){
                     parent = $(form_selector + ' input[type="submit"]').parent();
                     html = $(parent).html();
                     $(parent).html('<img src="/images/loading.png" class="img_loading">');
                 },
                 success: function(data){
-                    if(data !== '')
+                    if(data.error !== '')
                     {
-                        $(form_selector + ' .status label').text(data);
+                        $(form_selector + ' .status label').text(data.error);
                         $(parent).html(html);
                     }
                     else
@@ -115,6 +116,18 @@ function ajaxFormRequest(action, form_selector)
                         $(parent).html(html);
                         if(form_selector === '.form_login')
                         {
+                            if(data.gender === 'men')
+                            {
+                                var avatar = '<li class="profile"><img src="/images/def-avatar-men.png"></li>';
+                            }
+                            if(data.gender === 'women')
+                            {
+                                var avatar = '<li class="profile"><img src="/images/def-avatar-women.png"></li>';
+                            }
+                            $("ul .login").replaceWith(avatar);
+                            $("ul .reg").replaceWith('<li class="logout"><img src="/images/logout-button.png"></li>');
+                            
+                            
                             hideAll_form();
                         }
                         if(form_selector === '.form_registration')

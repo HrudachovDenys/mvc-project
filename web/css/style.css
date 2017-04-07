@@ -57,11 +57,21 @@ ul li a:hover{
     cursor: pointer;
 }
 
-ul .login{
+ul .login,
+ul .reg,
+ul .profile,
+ul .logout{
     float: right;
 }
-ul .reg{
-    float: right;
+
+ul li img
+{
+    margin-top: 8px;
+    margin-right: 20px;
+}
+
+ul li img:hover{
+    cursor: pointer;
 }
 
 section{
@@ -102,10 +112,10 @@ section{
 .popup form .login{
     position: fixed;
     width: 400px;
-    height: 290px;
+    height: 300px;
     left: 50%;
     top: -50%;
-    margin-top: -145px;
+    margin-top: -150px;
     margin-left: -200px;
     background: #4b4b4b;
     z-index: 1001;
