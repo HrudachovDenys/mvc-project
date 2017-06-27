@@ -44,7 +44,7 @@ class Module_Auth
         return count($user) > 0;
     }
     
-    public function reg($username, $email, $pass, $gender, $date_birthday, $role)
+    public function reg($username, $email, $pass, $gender, $date_birthday, $role, $avatar)
     {
          if($this->is_login())
         {
@@ -80,7 +80,8 @@ class Module_Auth
         $pid = $this->db->user_profile->insert([
             "user_id"      => $uid,
             "gender"       => $gender,
-            "date_birhday" => $date_birthday
+            "date_birhday" => $date_birthday,
+            "uri_avatar"   => $avatar
         ]);
         
         if($pid == 0)
@@ -101,17 +102,29 @@ class Module_Auth
             return false;
         }
         
-        $res = $this->sendConfirmEmail($uid, $email);
-        
-        if(!$res)
-        {
-            $this->db->users->delete($uid);
-            $this->db->user_profile->delete($pid);
-            $this->db->user_roles->delete($rid);
-            return false;
-        }
+        //$this->sendConfirmEmail($uid, $email);
         
         return true;
+    }
+    
+    public function getRoles()
+    {
+        $roles = $this->db->roles->getAll();
+        
+        return $roles;
+    }
+    
+    public function getRole($uid = null)
+    {
+        if($uid == null)
+        {
+            $uid = $this->getUser()['id'];
+        }
+        $rid = $this->db->user_roles->getAll("user_id=:id", ["id" => $uid]);
+        
+        $role = $this->db->roles->getAll('`id`=:id', ['id'=>$rid[0]['role_id']]);
+        
+        return $role[0]['role'];
     }
     
     public function sendConfirmEmail($uid, $to)
@@ -158,36 +171,28 @@ class Module_Auth
             $this->sendConfirmEmail($uid, $user["email"]);
             return false;
         }
-        
-        $urid = $this->db->user_roles->getAll("user_id=:id", ["id" => $uid]);
-        
-        if(count($urid) == 0) 
-        {
-            return false;
-        }
 
         $rid = $this->db->roles->getAll("`id`=:id", ["id" => $urid[0]["role_id"]]);
         
-        if(count($rid) == 0) 
+        if($rid[0]["role"] == "unconfirmed")
+        {
+            updateRole($uid, 'user');
+        }
+        else
         {
             return false;
         }
-        
-        if($rid[0]["role"] != "unconfirmed")
-        {
-            return false;
-        }
-        
-        $rid = $this->db->roles->getAll("`role`=:role", ["role" => "user"]);
-        
-        if($rid[0]["role"] != "user")
-        {
-            return false;
-        }
-        
-        $this->db->user_roles->update($urid[0]["id"], ["role_id" => $rid[0]["id"]]);
         
         return true;
+    }
+    
+    public function updateRole($uid, $role)
+    {
+        $urid = $this->db->user_roles->getAll("user_id=:id", ["id" => $uid]);
+        
+        $rid = $this->db->roles->getAll("`role`=:role", ["role" => $role]);
+        
+        $this->db->user_roles->update($urid[0]["id"], ["role_id" => $rid[0]['id']]);
     }
     
     private function getIp()
@@ -233,7 +238,7 @@ class Module_Auth
         $data = array(
             "user_id"  => $uid,
             "key"      => $this->generateSessionKey($ip, $client, $uid),
-            "ip"  => $ip,
+            "ip"       => $ip,
             "browser"  => $client,
             "expiries" => date('y:m:d H:i:s', $timestamp)
         );
@@ -310,14 +315,41 @@ class Module_Auth
         return md5($hash1 . $hash2 . $hash3 . $hash4 . $subkey . $hash5 . $hash6) . $subkey == $key;
     }
     
-    public function getGender()
+    public function getUser($uid = null)
     {
         $key = $_COOKIE["token"];
         
-        $token = $this->db->tokens->getAll("`key`=:key",["key" => $key]);
+        $token = $this->db->tokens->getAll("`key`=:key", ["key" => $key]);
         
-        $user = $this->db->user_profile->getAll("user_id=:id", ["id" => $token[0]["user_id"]]);
+        if($uid == null)
+        {
+            $uid = $token[0]["user_id"];
+        }
         
-        return $user[0]["gender"];
+        $userprofile = $this->db->user_profile->getAll("user_id=:id", ["id" => $uid]);
+        $userinfo = $this->db->users->getAll("id=:id", ["id" => $uid]);
+        
+        $user = array_merge($userprofile[0], $userinfo[0]);
+        
+        return $user;
+    }
+    
+    public function getUsers()
+    {
+        $users = $this->db->users->getAll();
+        
+        return $users;
+    }
+    
+    public function logout()
+    {
+        if(empty($_COOKIE["token"])) 
+        {
+            return;
+        }
+        
+        $key = $_COOKIE["token"];
+        
+        $this->db->tokens->deleteWhere("`key`=:key", ["key" => $key]);
     }
 }

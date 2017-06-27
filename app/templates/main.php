@@ -3,8 +3,7 @@
     <head>
         <title><?= app::getRouter()->getController() ?></title>
         <link rel="stylesheet" href="/css/style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="/js/jquery-3.2.0.min.js"></script>
         <script src="/js/script.js"></script>
     </head>
     <body data-domain="<?=Config::get('domain')?>">
@@ -13,18 +12,15 @@
             <img class="logo" src="http://www.sourcecertain.com/img/Example.png"/>
         </header>
 
-        <ul>
-            <li><a href="#">Главная</a></li>
-            <li><a href="#">Категории</a></li>
-            <li><a href="#">Видео</a></li>
-            <li><a href="#">Галерея</a></li>
+        <ul class="main_menu">
+            <li class="li_menu"><a href="/main">Главная</a></li>
       
-            <?php if (Module_Auth::instance()->is_login() && Module_Auth::instance()->getGender() == "men"): ?>
-            <li class="logout"><img src="/images/logout-button.png"></li>
-            <li class="profile"><img src="/images/def-avatar-men.png"></li>
-            <?php elseif (Module_Auth::instance()->is_login() && Module_Auth::instance()->getGender() == "women"): ?>
-            <li class="logout"><img src="/images/logout-button.png"></li>
-            <li class="profile"><img src="/images/def-avatar-women.png"></li>
+            <?php if (Module_Auth::instance()->is_login() && Module_Auth::instance()->getUser()["gender"] == "men"): ?>
+            <li class="logout"><a href="/api/logout"><img src="/images/logout-button.png"></a></li>
+            <li class="profile"><a href="/profile"><img src="/images/def-avatar-men.png"></a></li>
+            <?php elseif (Module_Auth::instance()->is_login() && Module_Auth::instance()->getUser()["gender"] == "women"): ?>
+            <li class="logout"><a href="/api/logout"><img src="/images/logout-button.png"></a></li>
+            <li class="profile"><a href="/profile"><img src="/images/def-avatar-women.png"></a></li>
             <?php else: ?>
             <li class="reg"><img src="/images/add-new-user.png"></li>
             <li class="login"><img src="/images/login-button.png"></li>
@@ -177,7 +173,7 @@
         </section>
         
         <footer>
-            
+            <br><p>2017 All right reserved</p>
         </footer>
         
     </body>

@@ -75,3 +75,45 @@ CREATE TABLE `confirm_keys`
     `user_id` INT UNSIGNED,
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 );
+
+
+
+CREATE TABLE `categories`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `category` VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO `categories`(`category`) VALUES
+    ("category1"),
+    ("category2"),
+    ("category3"),
+    ("category4");
+
+CREATE TABLE `post_status`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `status` VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO `post_status`(`status`) VALUES
+    ("moderation"),
+    ("published"),
+    ("revision"),
+    ("blocked");
+
+
+CREATE TABLE `posts`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `url_title` VARCHAR(255) NOT NULL,
+    `text` TEXT NOT NULL,
+    `user_id` INT UNSIGNED,
+    `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `category_id` INT UNSIGNED,
+    `status_id` INT UNSIGNED,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
+    FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`),
+    FOREIGN KEY (`status_id`) REFERENCES `post_status`(`id`)
+); 

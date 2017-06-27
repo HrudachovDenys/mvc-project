@@ -82,8 +82,20 @@ class Module_DB
         }
         
         $res = $this->conn->prepare("DELETE FROM {$this->table}  WHERE id=:id");
-        $res -> bindValue(":id", $id, PDO::PARAM_INT);
+        $res->bindValue(":id", $id, PDO::PARAM_INT);
         $res->execute();
+        $this->reset();
+    }
+    
+    public function deleteWhere($where=0, $data=[])
+    {
+        if($this->table == null) 
+        {
+            return false;
+        }
+        
+        $res = $this->conn->prepare("DELETE FROM {$this->table}  WHERE {$where}");
+        $res->execute($data);
         $this->reset();
     }
     
@@ -108,5 +120,25 @@ class Module_DB
         $this->reset();
     }
     
-    
+    public function updateWhere($data, $where, $where_data)
+    {
+        if($this->table == null) 
+        {
+            return false;
+        }
+        
+        $query = "UPDATE {$this->table} SET ";
+        foreach($data as $key => $value)
+        {
+            $query .= "`{$key}`=:{$key}";
+        }
+        
+        $query .= " WHERE $where";
+        
+        $data = array_merge($data, $where_data);
+
+        $res = $this->conn->prepare($query);
+        $res->execute($data);
+        $this->reset();
+    }
 }

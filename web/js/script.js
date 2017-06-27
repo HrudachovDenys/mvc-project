@@ -2,15 +2,33 @@ $(window).scroll(function(){
     var top = parseInt($('header').css('height'));
     if($(this).scrollTop() >= top)
     {
-        $('ul').css('top', 0);
-        $('ul').css('position', 'fixed');
+        $('.main_menu').css('top', 0);
+        $('.main_menu').css('position', 'fixed');
+        $('.profile_menu').css('top', 70);
+        $('.profile_menu').css('position', 'fixed');
     }
     else
     {
-        $('ul').css('top', top);
-        $('ul').css('position', 'absolute');
+        $('.main_menu').css('top', top);
+        $('.main_menu').css('position', 'absolute');
+        $('.profile_menu').css('top', 20);
+        $('.profile_menu').css('position', 'absolute');
     }
+    /*
+    if($(this).scrollTop() >= top)
+    {
+        $('.profile_menu').css('top', 0);
+        $('.profile_menu').css('position', 'fixed');
+    }
+    else
+    {
+        $('.profile_menu').css('top', top);
+        $('.profile_menu').css('position', 'absolute');
+    }
+    */
 });
+
+var domain = null;
 
 $(window).ready(function(){
     
@@ -20,12 +38,55 @@ $(window).ready(function(){
     change_form_click(".popup form .resetpass table tr td .bt_cancel", '.popup .resetpass', '.popup .login');
     hideAll_form_click();
     
-    var domain = $('body').data('domain');
+    domain = $('body').data('domain');
     
     ajaxFormRequest(domain + 'api/auth', '.form_login');
     ajaxFormRequest(domain + 'api/reg', '.form_registration');
-    //ajaxFormRequest(domain + 'api/auth', '.form_resetpass');
+    
+    $(selector).click(function () {
+        $('.popup').css('visibility', 'visible');
+        $(form_selector).css('visibility', 'visible');
+        $(form_selector).animate({top: "50%"}, 300);
+    });
+    ajaxFormRequest(domain + 'api/logout', '');
 });
+
+function edit_about()
+{
+    var text = $('.p_about').text();
+    
+    $('.p_about').replaceWith('<form class="form_about" method="post" action="api/editabout">\n\
+        <input type="submit" value="" class="ok_about">\n\
+        <textarea name="about_text" class="about_text"></textarea></form>');
+    $('.about_text').text(text);
+    $('.edit_img_about').css("visibility", "hidden");
+}
+
+function preview_click()
+{
+    $('.form_addpost').attr('target', '_blank');
+    $('.form_addpost').attr('action', '../post/preview');
+}
+
+function addpost_click()
+{
+    $('.form_addpost').attr('target', '');
+    $('.form_addpost').attr('action', '../api/addpost');
+}
+
+function edit_flname()
+{
+    $('#h1_flname').replaceWith('<form class="form_flname" method="post" action="api/editflname">\n\
+        <input type="text" class="fname" name="fname" placeholder="Имя" pattern="^[a-zA-Zа-яА-Я]{2,18}$" required>\n\
+        <input type="text" class="lname" name="lname" placeholder="Фомилия" pattern="^[a-zA-Zа-яА-Я]{2,18}$" required>\n\
+        <input type="submit" value=""></form>');
+    $('.edit_img').css("visibility", "hidden");
+}
+
+function edit_country()
+{
+    $(location).attr('href', 'api/editcountry');
+}
 
 function change_form_click(click_selector, what_selector, for_selector){
     $(click_selector).click(function () {
@@ -99,14 +160,14 @@ function ajaxFormRequest(action, form_selector)
                 url: action, 
                 type: 'post',
                 data: data,
-                dataType: 'json',
                 beforeSend: function(){
                     parent = $(form_selector + ' input[type="submit"]').parent();
                     html = $(parent).html();
                     $(parent).html('<img src="/images/loading.png" class="img_loading">');
                 },
                 success: function(data){
-                    if(data.error !== '')
+                    data = JSON.parse(data);
+                    if(data.error !== '0')
                     {
                         $(form_selector + ' .status label').text(data.error);
                         $(parent).html(html);
@@ -116,19 +177,8 @@ function ajaxFormRequest(action, form_selector)
                         $(parent).html(html);
                         if(form_selector === '.form_login')
                         {
-                            if(data.gender === 'men')
-                            {
-                                var avatar = '<li class="profile"><img src="/images/def-avatar-men.png"></li>';
-                            }
-                            if(data.gender === 'women')
-                            {
-                                var avatar = '<li class="profile"><img src="/images/def-avatar-women.png"></li>';
-                            }
-                            $("ul .login").replaceWith(avatar);
-                            $("ul .reg").replaceWith('<li class="logout"><img src="/images/logout-button.png"></li>');
-                            
-                            
                             hideAll_form();
+                            location.reload();
                         }
                         if(form_selector === '.form_registration')
                         {

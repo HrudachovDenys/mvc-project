@@ -25,7 +25,7 @@ header .logo{
     margin: 50px 0 0 20px;
 }
 
-ul{
+.main_menu{
     background: #1a2026;
     list-style-type: none;
     position: absolute;
@@ -38,12 +38,12 @@ ul{
     z-index: 999;
 }
 
-ul li{
+.main_menu li{
     float: left;
     margin-right: 10px;
 }
 
-ul li a{
+.main_menu li a{
     text-decoration: none;
     color: #cccccc;
     text-align: center;
@@ -52,25 +52,32 @@ ul li a{
     padding-left: 15px;
     padding-right: 15px;
 }
-ul li a:hover{
+
+.main_menu .li_menu a:hover
+{
     background:#060a0e;
     cursor: pointer;
 }
 
-ul .login,
-ul .reg,
-ul .profile,
-ul .logout{
+.main_menu .login,
+.main_menu .reg,
+.main_menu .profile,
+.main_menu .logout{
     float: right;
 }
 
-ul li img
+.main_menu li img
 {
     margin-top: 8px;
+}
+
+.main_menu .login img,
+.main_menu .reg img
+{
     margin-right: 20px;
 }
 
-ul li img:hover{
+.main_menu li img:hover{
     cursor: pointer;
 }
 
@@ -82,6 +89,8 @@ section{
     padding-bottom: 20px;
     position: relative;
     top: 50px;
+    overflow: auto;
+    min-height: 700px;
 }
 
 .popup{
@@ -339,4 +348,350 @@ section{
 
 .popup form .reg_success table tr td label{
     color: yellow;
+}
+
+.div_profile .profile_menu
+{
+    background: #1a2026;
+    list-style-type: none;
+    width: 200px;
+    box-shadow: 0 4px 10px -2px black;
+    z-index: 999;
+    margin-left: 20px;
+    padding: 0;
+    position: absolute;
+    
+}
+
+.div_profile .profile_menu li a{
+    text-decoration: none;
+    color: #cccccc;
+    line-height: 40px;
+    display: block;
+    padding-left: 50px;
+}
+
+.div_profile .profile_menu li a:hover{
+    background:#060a0e;
+    cursor: pointer;
+}
+
+.div_profile .main_menu .li_menu a:hover{
+    background:#060a0e;
+    cursor: pointer;
+}
+
+.div_profile
+{
+    width: 100%;
+}
+
+.div_profile .profile_info
+{
+    color: yellow;
+    float: left;
+    width: 70%
+}
+
+.form_country select
+{
+    margin-top: 20px;
+}
+
+.div_profile .profile_info h1
+{
+    margin-left: 350px;
+    float: left;
+}
+
+.div_profile .profile_info h3
+{
+    margin-left: 300px;
+    margin-top: 30px;
+    float: left;
+    color: #ababab;
+}
+
+.div_profile .h3_email
+{
+    width: 50%;
+}
+
+.div_profile .profile_info p
+{
+    margin-left: 350px;
+    color: #ababab;
+    margin-top: 30px;
+    font-style:italic;
+}
+
+.div_profile .profile_info .form_about
+{
+    position: absolute;
+    top: 315px;
+    left: 300px;
+    width: 400px;
+}
+
+.div_profile .profile_info .about_text
+{
+    width: 100%;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.div_profile .profile_info .ok_about
+{
+    margin-left: 100px;
+}
+
+.div_profile .profile_info .list_country
+{
+    height: 30px;
+    float: left;
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.div_profile .profile_info img
+{
+    float: left;
+    margin-left: 10px;
+}
+
+.div_profile .profile_info .edit_img
+{
+    margin-top: 22px;
+}
+
+.div_profile .profile_info .edit_img_country
+{
+    margin-top: 8px;
+}
+
+.div_profile .profile_info .edit_img_about
+{
+     margin-top: 28px;
+}
+
+.div_profile .profile_info input
+{
+    height: 30px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.div_profile .profile_info input[type=submit]
+{
+    background: url('../images/ok.png');
+    height:24px;
+    width: 24px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+}
+
+.div_profile .profile_info .fname
+{
+    margin-left: 100px;
+}
+
+.div_profile .profile_info img:hover
+{
+    cursor: pointer;
+}
+
+.form_addpost
+{
+    margin-left: 300px;
+    width: 800px;
+}
+
+.form_addpost .addpost_title
+{
+    width: 80%;
+    margin-top: 30px;
+}
+
+.form_addpost .addpost_category,
+.form_addpost .addpost_title,
+.form_addpost .addpost_url_title
+{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.form_addpost .addpost_url_title
+{
+    width: 92%;
+    margin-top: 5px;
+}
+
+.form_addpost .addpost_text
+{
+    width: 93%;
+    margin-top: 5px;
+    height: 500px;
+}
+
+footer
+{
+    background: #1a2026;
+    height: 70px;
+    position: relative;
+    left: 2%;
+    right: 2%;
+    width: 96%;
+    box-shadow: 0 4px 10px 2px black;
+    top: 50px;
+}
+
+footer p
+{
+    text-align: center;
+    color: gainsboro;
+    font-size: 11px;
+}
+
+/*Posts*/
+.post_section
+{
+    width:90%;
+    margin-left: 5%;
+    margin-bottom: 50px;
+}
+
+.post_title
+{
+    color: yellow;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 40px;
+}
+
+.post_title_img
+{
+    max-width: 60%;
+    max-height: 500px;
+    display: block;
+    margin: auto;
+    box-shadow: 0 0 0 2px grey;
+    margin-bottom: 50px;
+}
+
+.post_text
+{
+    color: yellow;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    line-height: 30px;
+}
+
+.post_choose_blocks
+{
+    width: 99%;
+    padding-left: 5px;
+}
+
+.post_choose_block
+{
+    background: #1a2026;
+    height: 200px;
+    width: 300px;
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    padding-top: 0;
+    box-shadow: 0 0 4px 0 whitesmoke;
+}
+
+.post_choose_block:hover
+{
+    box-shadow: 0 0 4px 0 yellow;
+    cursor: pointer;
+}
+
+.post_choose_block h1
+{
+    color: #1a2026;
+    margin-top: 0;
+    margin-bottom: 2px;
+    text-align: center;
+    width: 100%;
+    background: linear-gradient(to right, #1a2026, white, #1a2026);
+}
+
+.post_choose_block img
+{
+    max-height: 165px;
+    max-width: 300px;
+    display: block;
+    margin: auto;
+    box-shadow: 0 0 4px 0 grey;
+}
+
+.form_flname
+{
+    margin-left: 250px;
+}
+
+.gender_flname
+{
+    position: absolute;
+    left: 290px;
+    top: 40px;
+}
+
+.form_addpost input[type=submit]
+{
+    width: 47%;
+    padding: 10px;
+    margin-top: 25px;
+    background: #1a2026;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+
+.form_addpost input[type=submit]:active
+{
+    background: #9b9b9b;
+}
+
+.adm_users
+{
+    border: 1px solid grey;
+    margin-left: 250px;
+    margin-top: 20px;
+    color: yellow;
+}
+
+.adm_users td
+{
+    border: 1px solid grey;
+    min-width: 100px;
+    line-height: 30px;
+    padding: 10px;
+}
+
+.adm_users thead td
+{
+    background: grey;
+    color: #0f0f12;
+}
+
+#h1_message
+{
+    width: 100%;
+    margin-top: 100px;
+    text-align: center;
 }
